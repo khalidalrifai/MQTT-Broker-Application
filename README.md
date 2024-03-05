@@ -1,8 +1,18 @@
-# MQTT Broker Project with MQTTnet
+# MQTT Broker Application
 
 ## Overview
 
-The MQTT Broker Project leverages the .NET 8.0 framework and MQTTnet, a high-performance .NET library for MQTT based communication, to facilitate messaging between devices and services. Designed for scalability, it supports a wide range of IoT applications, offering robust messaging capabilities with enhanced security features including authentication and authorization.
+The MQTT Broker Project leverages the .NET 8.0 framework and MQTTnet, a high-performance .NET library for MQTT-based communication, to facilitate messaging between devices and services. Designed for scalability, it supports a wide range of IoT applications, offering robust messaging capabilities with enhanced security features including authentication and authorization.
+
+## Detailed Description
+
+The MQTT Broker Project is a comprehensive .NET 8.0 application designed to facilitate robust and secure MQTT communication between various devices and services in IoT ecosystems. Leveraging the high-performance MQTTnet library, the project provides an efficient, scalable solution for real-time messaging, supporting a wide range of IoT applications from home automation to industrial telemetry.
+
+At its core, the project offers a fully integrated MQTT broker setup, enabling devices to publish and subscribe to messages efficiently. It enhances security through custom authentication and authorization mechanisms, ensuring that only authorized devices and services can interact within the network. Global exception handling is implemented to ensure the system's reliability and resilience, capturing and managing unexpected errors gracefully.
+
+WebSocket support is included, allowing for MQTT communication over web protocols, making it ideal for web-based IoT applications requiring real-time data exchange. The project's architecture is designed with modularity and scalability in mind, facilitating easy expansion and customization to meet specific application needs.
+
+With its focus on security, performance, and scalability, the MQTT Broker Project aims to provide a solid foundation for developers looking to build or integrate MQTT communication capabilities into their .NET-based IoT solutions, ensuring secure, reliable, and efficient messaging across devices and services.
 
 ## Key Features
 
@@ -37,7 +47,7 @@ To install these packages, you can use the .NET CLI command `dotnet restore` wit
 
 1. **Clone the Repository**
    ```
-   git clone <repository-url>
+   git clone <[repository-url](https://github.com/khalidalrifai/MQTT-Broker-Application)>
    ```
 2. **Navigate to Project Directory**
    ```
