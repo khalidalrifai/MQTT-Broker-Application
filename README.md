@@ -110,6 +110,82 @@ For more details on MQTTnet and .NET 8.0:
 - [MQTTnet GitHub Repository](https://github.com/chkr1011/MQTTnet)
 - [.NET 8.0 Documentation](https://docs.microsoft.com/en-us/dotnet/)
 
+## Block Diagram
+
+![Block Diagram of MQTT Broker Application](/Images/MQTT_Broker_Block_Diagram.png "Block Diagram of MQTT Broker Application")
+
+1. **Client Devices/Applications Block:**
+   - Represents various MQTT clients that interact with the MQTT broker.
+   - Sub-components: IoT Devices, Web Applications, Mobile Applications.
+
+2. **MQTT Broker Block (Central Component):**
+   - The heart of the system that handles message brokering.
+   - Sub-components: MQTTnet Broker.
+
+3. **Authentication & Authorization Block:**
+   - Manages access control and secure communication.
+   - Sub-components: Authentication Manager, Authorization Manager.
+
+4. **Database/Storage Block (Extra & Optional):**
+   - Stores user credentials, access policies, and potentially message logs or session states.
+   - Sub-components: User Credentials DB, Policy DB.
+
+5. **WebSockets Block (For Real-Time Web Clients):**
+   - Enables real-time communication for web-based MQTT clients.
+   - Sub-components: WebSocket Interface.
+
+6. **Global Exception Handler Block:**
+   - Manages and logs exceptions that occur within the broker.
+   - Sub-components: Exception Logger.
+  
+## Functionality
+
+The MQTT Broker Project, built using .NET 8.0 and leveraging the MQTTnet library, is designed to facilitate message brokering for Internet of Things (IoT) applications and services. This detailed explanation breaks down the project's architecture, as illustrated in the block diagram, and describes the functionality and interaction between its components.
+
+### Components and Their Functionality:
+
+1. **Clients:**
+- **Functionality:** Clients can be IoT devices, web applications, mobile apps, or any MQTT-compatible device or service that publishes messages to or subscribes to messages from the MQTT Broker.
+- **Interaction with MQTT Broker:** Clients interact with the broker by establishing a connection, authenticating themselves (if required), and then performing publish/subscribe operations as per MQTT protocol standards.
+
+2. MQTT Broker:
+
+- **Functionality:** The core component that acts as an intermediary to manage, route, and deliver messages between clients based on the topic of the messages. It handles client connections, sessions, and ensures Quality of Service (QoS) levels are met.
+- **Interaction with Other Components:**
+   - Receives connection requests and messages from Clients.
+   - Consults the Authentication & Authorization component to authenticate and authorize client actions.
+   - Manages WebSocket connections for web-based clients.
+   - Forwards exceptions to the Exception Handler for logging and management.
+
+3. **Authentication & Authorization (Auth & Authz):**
+
+- **Functionality:** Manages the security aspect of the broker, authenticating clients based on credentials or tokens, and authorizing them for specific actions like publishing or subscribing to certain topics.
+Interaction with Database: Retrieves user credentials and authorization policies from the database to verify client requests.
+- **Interaction with MQTT Broker:** Respond to authentication and authorization queries from the broker.
+
+4. **Database:**
+
+- **Functionality:** Stores and manages data related to user credentials, authorization policies, possibly retained messages, and subscription details.
+- **Interaction with Authentication & Authorization:** Supplies necessary data for the authentication and authorization processes initiated by the Auth & Authz component.
+
+5. **WebSockets:**
+
+- **Functionality:** Facilitates real-time communication between web clients and the MQTT Broker over WebSocket protocol, enabling MQTT messaging over web technologies.
+- **Interaction with MQTT Broker:** The broker manages WebSocket connections, allowing for bidirectional messaging with web clients similar to traditional MQTT clients over TCP/IP.
+
+6. **Exception Handler:**
+
+- **Functionality:** Captures, logs, and manages unhandled exceptions occurring within the broker, ensuring the system's robustness and aiding in troubleshooting.
+- **Interaction with MQTT Broker:** The broker forwards exceptions to this component for appropriate handling.
+
+### Overall Workflow:
+- Clients initiate connections to the MQTT Broker, optionally going through the WebSocket layer if connecting from web applications.
+- The MQTT Broker handles these connections, consulting the Authentication & Authorization component to verify the client's credentials and permissions.
+- Upon successful authentication and authorization, clients can publish messages to topics, which the broker then routes to other subscribed clients, or subscribe to topics to receive messages.
+- Any exceptions arising during these processes are captured by the Exception Handler for logging and analysis.
+- The Database supports the Authentication & Authorization processes by storing and providing necessary data.
+
+
 ## Contributing
 
 I welcome contributions of all forms. Feel free to fork the project, make improvements, and submit pull requests. For major changes, please open an issue first to discuss what you would like to change.
