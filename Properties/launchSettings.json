@@ -1,3 +1,17 @@
+/* 
+  profiles: Contains different profiles for launching the application. Each profile can have its own settings.
+  
+  MQTTBrokerApplication: The name of the profile. You can have multiple profiles (e.g., for different environments).
+  
+  commandName: Specifies how the application is started. "Project" means it's run directly from the source code.
+  
+  launchBrowser: Determines whether a browser is opened when the application starts. Useful for web projects.
+  
+  environmentVariables: A collection of environment variables that are set when this profile is used. Here, it specifies that the ASPNETCORE_ENVIRONMENT is "Development".
+  
+  applicationUrl: Specifies the URLs the application will listen on when started with this profile. It includes both HTTPS and HTTP URLs.
+*/
+
 {
   "profiles": {
     "MQTTBrokerApplication": {

@@ -2,6 +2,9 @@
 
 namespace MQTTBrokerProject.Interfaces
 {
+    /// <summary>
+    /// Provides functionalities for authenticating users and tokens within the system.
+    /// </summary>
     public interface IAuthenticationService
     {
         /// <summary>

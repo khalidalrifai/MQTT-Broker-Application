@@ -11,7 +11,7 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure services
+// Configure services for dependency injection
 builder.Services.Configure<MqttBrokerSettings>(builder.Configuration.GetSection("MqttBrokerSettings"));
 builder.Services.Configure<MqttClientSettings>(builder.Configuration.GetSection("MqttClientSettings"));
 builder.Services.AddSingleton<IMqttServer>(new MqttFactory().CreateMqttServer());
@@ -20,12 +20,12 @@ builder.Services.AddSingleton<ISensorDataService, SensorDataService>();
 builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddSingleton<IAuthorizationService, AuthorizationManager>();
 
-// MQTT Server configuration
+// MQTT Server configuration to use the default MQTT protocol endpoint
 builder.Services.AddHostedMqttServer(mqttServer => mqttServer.WithDefaultEndpoint());
 
 var app = builder.Build();
 
-// Global exception handling
+// Global exception handling configuration for non-development environments
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler(appBuilder =>
@@ -41,7 +41,7 @@ if (!app.Environment.IsDevelopment())
                 var error = new { message = "An unexpected error occurred. Please try again later." };
                 await context.Response.WriteAsync(JsonSerializer.Serialize(error));
 
-                // Optionally log the exception or perform other actions
+                // Additional logging or actions based on the exception can be implemented here
             }
         });
     });
@@ -49,20 +49,20 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-// Enhanced WebSocket Configuration (if using WebSockets directly, consider this configuration)
+// WebSocket configuration to enhance real-time communication capabilities
 app.UseWebSockets(new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromSeconds(120),
     ReceiveBufferSize = 4 * 1024 // 4 KB
 });
 
-// Placeholder for Custom Security Middleware (implement this middleware according to your security needs)
+// Placeholder for custom security middleware - to be implemented as per application security requirements
 // app.UseMiddleware<CustomSecurityMiddleware>();
 
-// Modularized MQTT Configuration
+// Extension method to apply modular MQTT configuration
 app.UseCustomMqttConfiguration();
 
-// Start MQTT Server with Dynamic Configuration and Logging
+// Start the MQTT Server with configuration loaded from appsettings.json and logging
 var mqttSettings = app.Configuration.GetSection("MqttBrokerSettings").Get<MqttBrokerSettings>();
 var mqttServer = app.Services.GetRequiredService<IMqttServer>();
 mqttServer.StartAsync(new MqttServerOptionsBuilder()
@@ -71,18 +71,18 @@ mqttServer.StartAsync(new MqttServerOptionsBuilder()
 
 app.Run();
 
-// Extension method for modular MQTT configuration
+// Extension method defined to add MQTT endpoints and any additional MQTT-related configurations
 public static class MqttConfigurationExtensions
 {
     public static IApplicationBuilder UseCustomMqttConfiguration(this IApplicationBuilder app)
     {
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapMqtt("/mqtt");
-            // Map other controllers or signalR etc., if needed
+            endpoints.MapMqtt("/mqtt"); // Map the MQTT endpoint
+            // Here, additional endpoints for controllers or SignalR, etc., can be defined
         });
 
-        // Any other MQTT-related configuration can go here
+        // Additional MQTT-related configurations can be added here
 
         return app;
     }
