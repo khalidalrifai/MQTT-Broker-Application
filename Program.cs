@@ -1,17 +1,21 @@
-﻿using MQTTBrokerProject.Configurations;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MQTTBrokerProject.Configurations;
 using MQTTBrokerProject.Interfaces;
 using MQTTBrokerProject.Security;
 using MQTTBrokerProject.Services;
 using MQTTnet;
 using MQTTnet.AspNetCore;
 using MQTTnet.AspNetCore.Extensions;
+using MQTTnet.Client;
 using MQTTnet.Server;
 using System.Net;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure services for dependency injection
+builder.Services.AddSingleton<IMqttClient>(new MqttFactory().CreateMqttClient());
+
+// Configure services
 builder.Services.Configure<MqttBrokerSettings>(builder.Configuration.GetSection("MqttBrokerSettings"));
 builder.Services.Configure<MqttClientSettings>(builder.Configuration.GetSection("MqttClientSettings"));
 builder.Services.AddSingleton<IMqttServer>(new MqttFactory().CreateMqttServer());
